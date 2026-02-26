@@ -17,7 +17,7 @@ from docopt import docopt
 import logging
 from enum import Enum
 from datetime import date
-from icalendar import Calendar, Event
+import vobject
 from FastingCalendar import FastingLevels, getFastingCalendar
 
 # german texts:
@@ -40,14 +40,14 @@ if ARGV["--year"]:
 
 fasting_days = getFastingCalendar(current_year, ARGV["--old"])
 
-events = []
+cal = vobject.iCalendar()
 
 for k,v in fasting_days.items():
     if v==FastingLevels.NO_FASTING:
         continue
-    events.append(Event.new(summary=fl2txtde[v], start=k))
-    
+    e = cal.add('vevent')
+    e.add('summary').value = fl2txtde[v]
+    e.add('dtstart').value = k
+        
 with open(ARGV["--ics"], 'w') as f:
-    icsCal = Calendar(subcomponents=events)
-
-    f.writelines(icsCal.to_ical())
+    f.write(cal.serialize())
