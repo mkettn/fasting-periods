@@ -21,7 +21,7 @@ def mark_range(fc:map, start:datetime.date,days:int, lvl:FastingLevels):
     """ mark range in fasting calendar"""
     cd = start
     for _ in range(days):
-        fc[start] = lvl
+        fc[cd] = lvl
         cd+=TD_ONE_DAY
 
 def getFastingCalendar(year, old_style):
