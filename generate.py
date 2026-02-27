@@ -9,6 +9,7 @@ Arguments:
 
 Options:
     --old        set calendar style to old.
+    --new        set calendar style to new (the default).
     --year=YEAR  set this year instead of current year.
     --ics=FILE   produce a ics file.
     --html=FILE  produce a html file.

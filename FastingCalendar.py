@@ -43,9 +43,9 @@ def getFastingCalendar(year, old_style):
     pentecost = easter_sunday+timedelta(days=50)
     # map for all days of current year -> FastingLevels:
     fasting_days = {}
-    curr_day = first_day_of_year
-    # assign all weekdays:
-    while curr_day < last_day_of_year:
+    curr_day = theophany
+    # fasting every wed and fri, except between christmas and thephany
+    while curr_day < christmas:
         if curr_day.weekday() in [2,4]:
             fasting_days[curr_day] = FastingLevels.NO_OIL
         else:
@@ -70,12 +70,16 @@ def getFastingCalendar(year, old_style):
     fasting_days[easter_sunday-TD_ONE_DAY] = FastingLevels.NO_OIL
     # christos anesti! during bright week no fasting
     mark_range(fasting_days, easter_sunday, 7, FastingLevels.NO_FASTING)
+    # fish allowed at the day of the announciation of the theotokos 
+    if fasting_days[annunciation_of_the_theotokos]:
+        fasting_days[annunciation_of_the_theotokos] = FastingLevels.NO_DAIRY
     # until pentecost wed and fri oil allowed
     curr_day = easter_sunday+timedelta(weeks=1)
     while curr_day < pentecost:
         if curr_day.weekday() in [2, 4]:
             fasting_days[curr_day] = FastingLevels.NO_FISH
         curr_day+=TD_ONE_DAY
+
     #### pentecost
     curr_day = pentecost
     # no fasting during pentecost:

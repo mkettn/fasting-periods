@@ -31,7 +31,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: generate files
-        run: python generate.py --old --ics=current_year.de.ics --html=index.html
+        run: |
+          python generate.py --old --ics=old.de.cal.ics --html=index.html
+          python generate.py --new --ics=new.de.cal.ics --html=new.cal.html
 
       - name: upload artifacts
         uses: actions/upload-pages-artifact@v3
