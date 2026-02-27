@@ -15,20 +15,11 @@ Options:
 """
 from docopt import docopt
 import logging
-from enum import Enum
 from datetime import date
 import vobject
 from FastingCalendar import FastingLevels, getFastingCalendar
-
-# german texts:
-fl2txtde={
-    FastingLevels.NO_FASTING: "kein Fasten",
-    FastingLevels.NO_MEAT: "kein Fleisch",
-    FastingLevels.NO_DAIRY: "keine Milchprodukte, Eier",
-    FastingLevels.NO_FISH: "kein Fisch",
-    FastingLevels.NO_OIL: "kein Öl"
-}
-
+from IcsGen import fastdays2ics
+from HtmlGen import fastdays2html
 
 ARGV = docopt(__doc__)
 current_year = date.today().year
@@ -40,14 +31,14 @@ if ARGV["--year"]:
 
 fasting_days = getFastingCalendar(current_year, ARGV["--old"])
 
-cal = vobject.iCalendar()
+# german texts:
+fl2txtde={
+    FastingLevels.NO_FASTING: "kein Fasten",
+    FastingLevels.NO_MEAT: "kein Fleisch",
+    FastingLevels.NO_DAIRY: "keine Milchprodukte, Eier",
+    FastingLevels.NO_FISH: "kein Fisch",
+    FastingLevels.NO_OIL: "kein Öl"
+}
 
-for k,v in fasting_days.items():
-    if v==FastingLevels.NO_FASTING:
-        continue
-    e = cal.add('vevent')
-    e.add('summary').value = fl2txtde[v]
-    e.add('dtstart').value = k
-        
-with open(ARGV["--ics"], 'w') as f:
-    f.write(cal.serialize())
+fastdays2ics(fasting_days, fl2txtde, ARGV["--ics"])
+fastdays2html(current_year, fasting_days, fl2txtde, ARGV["--html"])
