@@ -32,8 +32,10 @@ jobs:
 
       - name: generate files
         run: |
-          python generate.py --old --ics=old.de.cal.ics --html=index.html
-          python generate.py --new --ics=new.de.cal.ics --html=new.cal.html
+          locale -a
+          python generate.py --old --lang=de_DE --ics=old.de.cal.ics --html=old.de.cal.html
+          python generate.py --new --lang=de_DE --ics=new.de.cal.ics --html=new.de.cal.html
+          ln -s old.de.cal.html index.html
 
       - name: upload artifacts
         uses: actions/upload-pages-artifact@v3
