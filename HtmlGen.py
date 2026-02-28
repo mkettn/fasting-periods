@@ -27,7 +27,7 @@ def _write_month(year:int, month:int, fastdays:map, fd):
     if curr_day.weekday()!=6:
         curr_day = first_day_of_month-timedelta(days=first_day_of_month.weekday()+1)
     print(f'<table class="month"><tr><th colspan="7">{first_day_of_month.strftime("%B")}</th></tr><tr class="wd">', file=fd)
-    for d in map(lambda x: x[:2].upper(), day_abbr):
+    for d in map(lambda x: x[:2].upper(), [day_abbr[6]]+day_abbr[:6]):
         print(f'<th>{d}</th>', file=fd)
     print("</tr>", file=fd)
     while curr_day <= last_day_in_table:

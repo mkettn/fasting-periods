@@ -110,9 +110,9 @@ def getFastingCalendar(year, old_style):
         curr_day+=TD_ONE_DAY
     while curr_day <= min(christmas, last_day_of_year):
         if curr_day.weekday() in [0,2,4]:
-            fasting_days[curr_day] = FastingLevels.NO_FISH
-        else:
             fasting_days[curr_day] = FastingLevels.NO_OIL
+        else:
+            fasting_days[curr_day] = FastingLevels.NO_FISH
         curr_day+=TD_ONE_DAY
     # we're finished
     if not old_style:
@@ -123,8 +123,8 @@ def getFastingCalendar(year, old_style):
     christmas = date(year-1,12,25)+TD_JUL_GREG
     while curr_day < christmas:
         if curr_day.weekday() in [0,2,4]:
-            fasting_days[curr_day] = FastingLevels.NO_FISH
-        else:
             fasting_days[curr_day] = FastingLevels.NO_OIL
+        else:
+            fasting_days[curr_day] = FastingLevels.NO_FISH
         curr_day+=TD_ONE_DAY
     return fasting_days
