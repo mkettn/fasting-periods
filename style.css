@@ -2,12 +2,14 @@ html {
     justify-content: center;
     display: flex;
 }
+
+h1 {
+    text-align: center;
+}
+
 .grid {
   display: grid;
   grid-template-columns: auto auto auto;
-}
-h1 {
-    text-align: center;
 }
 
 /* hide header for printing, to fit everything on one A4 page */
@@ -56,4 +58,20 @@ h1 {
 
 .f4 {
     background-color: red;
+}
+
+.legend {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+}
+.legend div {
+    margin: 1ex;
+}
+.lc {
+  float: left;
+    clear: both;
+  height: 1em;
+  width: 1em;
+  margin-right: 2pt;
+  border: 1pt solid black;
 }

@@ -3,14 +3,22 @@ from FastingCalendar import FastingLevels, TD_ONE_DAY
 from datetime import date, timedelta
 from calendar import monthrange, day_abbr
 
-def _write_month(year:int, month:int, fastdays:map, fd):
-    fl2hc = {
+_FL2HC = {
         FastingLevels.NO_FASTING: "f0",
         FastingLevels.NO_MEAT: "f1",
         FastingLevels.NO_DAIRY: "f2",
         FastingLevels.NO_FISH: "f3",
         FastingLevels.NO_OIL: "f4",
-    }
+}
+
+
+def get_legend(transl):
+    return '<div class="legend">' \
+        + ''.join([f'<div><div class="lc {v}"></div><div>{transl[k]}</div></div>' for k,v in _FL2HC.items()]) \
+        + '</div>'
+
+
+def _write_month(year:int, month:int, fastdays:map, fd):
     first_day_of_month = date(year, month, 1)
     last_day_of_month = date(year, month, monthrange(year, month)[1])
     last_day_in_table = last_day_of_month+timedelta(days=6-((last_day_of_month.weekday()+1)%7))
@@ -28,7 +36,7 @@ def _write_month(year:int, month:int, fastdays:map, fd):
         if (curr_day < first_day_of_month) or (curr_day > last_day_of_month):
             print('<td class="empty"></td>', file=fd)
         else:
-            print(f'<td class="{fl2hc[fastdays.get(curr_day, FastingLevels.NO_FASTING)]}">{curr_day.day}</td>', file=fd)
+            print(f'<td class="{_FL2HC[fastdays.get(curr_day, FastingLevels.NO_FASTING)]}">{curr_day.day}</td>', file=fd)
         if curr_day.weekday()==5: # end row each saturday
             print('</tr>', file=fd)
         curr_day += TD_ONE_DAY
@@ -42,4 +50,4 @@ def fastdays2html(year, fastdays, transl, htmlfile, title="", introduction="", f
             print("<div>", file=fd)
             _write_month(year,m,fastdays,fd)
             print("</div>", file=fd)
-        print(f'<div>{footer}</body></html>', file=fd)
+        print(f'</div>{footer}</body></html>', file=fd)

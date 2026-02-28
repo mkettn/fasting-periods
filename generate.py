@@ -21,7 +21,7 @@ from datetime import date
 import vobject
 from FastingCalendar import FastingLevels, getFastingCalendar
 from IcsGen import fastdays2ics
-from HtmlGen import fastdays2html
+from HtmlGen import fastdays2html, get_legend
 from locale import setlocale, LC_ALL
 
 ARGV = docopt(__doc__)
@@ -51,4 +51,4 @@ fl2txtde={
 
 fastdays2ics(fasting_days, fl2txtde, ARGV["--ics"])
 title = f"Fasting calendar {current_year}"
-fastdays2html(current_year, fasting_days, fl2txtde, ARGV["--html"], title, f"<h1>{title}</h1>")
+fastdays2html(current_year, fasting_days, fl2txtde, ARGV["--html"], title, f"<h1>{title}</h1>", get_legend(fl2txtde))
