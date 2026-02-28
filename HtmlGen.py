@@ -22,7 +22,6 @@ def _write_month(year:int, month:int, fastdays:map, fd):
     for d in map(lambda x: x[:2].upper(), day_abbr):
         print(f'<th>{d}</th>', file=fd)
     print("</tr>", file=fd)
-    rowcnt = 1
     while curr_day <= last_day_in_table:
         if curr_day.weekday()==6: # start new row each sunday
             print("<tr>", file=fd)
@@ -32,19 +31,13 @@ def _write_month(year:int, month:int, fastdays:map, fd):
             print(f'<td class="{fl2hc[fastdays.get(curr_day, FastingLevels.NO_FASTING)]}">{curr_day.day}</td>', file=fd)
         if curr_day.weekday()==5: # end row each saturday
             print('</tr>', file=fd)
-            rowcnt+=1
         curr_day += TD_ONE_DAY
-    if rowcnt < 7:
-        print(('<tr>'+('<td class="empty"></td>'*7)+'</tr>')*(7-rowcnt), file=fd)
     print('</table>', file=fd)
-        
 
 
 def fastdays2html(year, fastdays, transl, htmlfile, title="", introduction="", footer=""):
     with open(htmlfile, 'w') as fd:
-        print(f'<!DOCTYPE html><html><head><title>{title}</title><link rel="stylesheet" type="text/css" href="style.css"/></head><body>{introduction}<div>', file=fd)
+        print(f'<!DOCTYPE html><html><head><title>{title}</title><link rel="stylesheet" type="text/css" href="style.css"/></head><body>{introduction}<div class="grid">', file=fd)
         for m in range(1,13):
             _write_month(year,m,fastdays,fd)
-            if m%4==0:
-                print("</div><div>", file=fd)
         print(f'<div>{footer}</body></html>', file=fd)

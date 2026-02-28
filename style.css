@@ -2,13 +2,10 @@ html {
     justify-content: center;
     display: flex;
 }
-
-div {
-        display: block;
-        float: left;
-
+.grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
 }
-
 h1 {
     text-align: center;
 }
@@ -23,13 +20,13 @@ h1 {
 .month {
     border-spacing: 0px;
     border-collapse: collapse;
-    margin: 1em;
+    margin: 1ex;
 }
 
 .month td {
     border: 1pt solid black;
-    height: 20pt;
-    width: 10pt;
+    height: 3ex;
+    width: 3ex;
     text-align: right;
     margin: 0;
 }
