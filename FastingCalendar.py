@@ -84,9 +84,10 @@ def getFastingCalendar(year, old_style):
     curr_day = pentecost
     # no fasting during pentecost:
     mark_range(fasting_days, curr_day, 7, FastingLevels.NO_FASTING)
+    curr_day+=timedelta(days=7)
     #### apostles fast
     # find monday after sunday of all saints, which is the next sunday after pentecost
-    while curr_day.weekday()!=1:
+    while curr_day.weekday()!=0:
         curr_day+=TD_ONE_DAY
     # mark fasting days:
     while curr_day < feast_of_st_peter_paul:
