@@ -39,5 +39,7 @@ def fastdays2html(year, fastdays, transl, htmlfile, title="", introduction="", f
     with open(htmlfile, 'w') as fd:
         print(f'<!DOCTYPE html><html><head><title>{title}</title><link rel="stylesheet" type="text/css" href="style.css"/></head><body>{introduction}<div class="grid">', file=fd)
         for m in range(1,13):
+            print("<div>", file=fd)
             _write_month(year,m,fastdays,fd)
+            print("</div>", file=fd)
         print(f'<div>{footer}</body></html>', file=fd)
