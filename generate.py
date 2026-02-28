@@ -42,4 +42,5 @@ fl2txtde={
 }
 
 fastdays2ics(fasting_days, fl2txtde, ARGV["--ics"])
-fastdays2html(current_year, fasting_days, fl2txtde, ARGV["--html"])
+title = f"Fasting calendar {current_year}"
+fastdays2html(current_year, fasting_days, fl2txtde, ARGV["--html"], title, f"<h1>{title}</h1>")

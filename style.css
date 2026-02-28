@@ -6,12 +6,24 @@ html {
 div {
         display: block;
         float: left;
-        padding: 1em;
+
+}
+
+h1 {
+    text-align: center;
+}
+
+/* hide header for printing, to fit everything on one A4 page */
+@media print {
+    h1 {
+        display: none;
+    }
 }
 
 .month {
-       border-spacing: 0px;
-         border-collapse: collapse;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    margin: 1em;
 }
 
 .month td {
@@ -20,6 +32,10 @@ div {
     width: 10pt;
     text-align: right;
     margin: 0;
+}
+
+.month th {
+        border: 1pt solid black;
 }
 
 .empty {
