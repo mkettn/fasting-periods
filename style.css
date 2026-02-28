@@ -12,9 +12,9 @@ h1 {
   grid-template-columns: auto auto auto;
 }
 
-/* hide header for printing, to fit everything on one A4 page */
+/* add .noprint class to hide elements for printing */
 @media print {
-    h1 {
+    .noprint {
         display: none;
     }
 }
