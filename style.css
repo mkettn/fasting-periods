@@ -22,7 +22,7 @@ h1 {
 .month {
     border-spacing: 0px;
     border-collapse: collapse;
-    margin: 1ex;
+    margin: 2pt;
 }
 
 .month td {
