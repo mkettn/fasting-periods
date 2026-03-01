@@ -47,10 +47,13 @@ transl = {}
 with open(tf, 'r') as fd:
     transl = yaml.safe_load(fd)
 
+cal_style = transl["style"][1]
 
+if ARGV["--old"]:
+    cal_style = transl["style"][0]
 
 fasting_days = getFastingCalendar(current_year, ARGV["--old"])
 
 fastdays2ics(fasting_days, transl["levels"], ARGV["--ics"])
-title = f"Fasting calendar {current_year}"
+title = f"{transl["title"]} {current_year} {cal_style}"
 fastdays2html(current_year, fasting_days, transl, ARGV["--html"], title, f'<h1 class="noprint">{title}</h1>', get_legend(transl["levels"]))

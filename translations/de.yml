@@ -1,3 +1,5 @@
+title: Fastenkalender
+style: ["alter Stil", "neuer Stil"]
 weekdays: [SO, MO, DI, MI, DO, FR, SA]
 months:
   - Januar

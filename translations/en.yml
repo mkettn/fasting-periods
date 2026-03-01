@@ -1,3 +1,5 @@
+title: Fasting calendar
+style: ["old style", "new style"]
 weekdays: [SU, MO, TU, WE, TH, FR, SA]
 months:
   - January
