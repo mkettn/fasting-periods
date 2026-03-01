@@ -37,8 +37,15 @@ def getFastingCalendar(year, old_style):
     dormition_of_the_theotokos = date(year, 8, 15)+offset
     nativity_of_the_theotokos = date(year, 9, 8)+offset
     feast_of_st_peter_paul = date(year, 6, 29)+offset
+    beheading_of_john_baptist = date(year, 8, 29)+offset
+    nativity_of_john_baptist = date(year, 6, 24)+offset
+    entry_of_the_theotokos = date(year, 12, 21)+offset
+    forefeast_of_the_nativity_of_christ = date(year, 12, 20)+offset
+    transfiguration_of_christ = date(year, 8,6)+offset
+    exaltation_of_the_cross = date(year, 9,14)+offset
     # moving feast days:
     easter_sunday = easter(year, EASTER_ORTHODOX)
+    palm_sunday = easter_sunday-timedelta(weeks=1)
     ascension_of_christ = easter_sunday+timedelta(days=40)
     pentecost = easter_sunday+timedelta(days=50)
     # map for all days of current year -> FastingLevels:
@@ -67,12 +74,14 @@ def getFastingCalendar(year, old_style):
         if curr_day.weekday() in [5, 6]:
             fasting_days[curr_day] = FastingLevels.NO_FISH
         curr_day+=TD_ONE_DAY
+    fasting_days[palm_sunday] = FastingLevels.NO_DAIRY
     fasting_days[easter_sunday-TD_ONE_DAY] = FastingLevels.NO_OIL
     # christos anesti! during bright week no fasting
     mark_range(fasting_days, easter_sunday, 7, FastingLevels.NO_FASTING)
     # fish allowed at the day of the announciation of the theotokos 
     if fasting_days[annunciation_of_the_theotokos]:
-        fasting_days[annunciation_of_the_theotokos] = FastingLevels.NO_DAIRY
+        # according to other sources fish is allowed then.
+        fasting_days[annunciation_of_the_theotokos] = FastingLevels.NO_FISH
     # until pentecost wed and fri oil allowed
     curr_day = easter_sunday+timedelta(weeks=1)
     while curr_day < pentecost:
@@ -91,10 +100,16 @@ def getFastingCalendar(year, old_style):
         curr_day+=TD_ONE_DAY
     # mark fasting days:
     while curr_day < feast_of_st_peter_paul:
-        fasting_days[curr_day]=FastingLevels.NO_DAIRY
-        if curr_day.weekday() in [2, 4]:
+        fasting_days[curr_day]=FastingLevels.NO_FISH
+        if curr_day.weekday() in [0, 2, 4]:
             fasting_days[curr_day]=FastingLevels.NO_OIL
+        elif curr_day.weekday in [5, 6]:
+            fasting_days[curr_day]=FastingLevels.NO_DAIRY
         curr_day+=TD_ONE_DAY
+    if fasting_days[nativity_of_john_baptist]:
+        fasting_days[nativity_of_john_baptist] = FastingLevels.NO_DAIRY
+    if fasting_days[feast_of_st_peter_paul-TD_ONE_DAY]:
+        fasting_days[feast_of_st_peter_paul-TD_ONE_DAY] = FastingLevels.NO_DAIRY
     #### fasting before dormition
     curr_day = dormition_of_the_theotokos-timedelta(weeks=2)
     while curr_day < dormition_of_the_theotokos:
@@ -103,17 +118,21 @@ def getFastingCalendar(year, old_style):
         else:
             fasting_days[curr_day] = FastingLevels.NO_OIL
         curr_day+=TD_ONE_DAY
+    fasting_days[beheading_of_john_baptist] = FastingLevels.NO_OIL
+    fasting_days[transfiguration_of_christ] = FastingLevels.NO_DAIRY
+    fasting_days[dormition_of_the_theotokos] = FastingLevels.NO_DAIRY
+    fasting_days[exaltation_of_the_cross] = FastingLevels.NO_FISH
     #### fasting before christmas:
     curr_day = christmas-timedelta(days=40)
-    while curr_day <= date(year,12,10):
-        fasting_days[curr_day] = FastingLevels.NO_DAIRY
-        curr_day+=TD_ONE_DAY
     while curr_day <= min(christmas, last_day_of_year):
-        if curr_day.weekday() in [0,2,4]:
-            fasting_days[curr_day] = FastingLevels.NO_OIL
-        else:
+        if curr_day.weekday() in [5, 6] and curr_day < forefeast_of_the_nativity_of_christ:
+            fasting_days[curr_day] = FastingLevels.NO_DAIRY
+        elif curr_day.weekday() in [1,3,5,6]:
             fasting_days[curr_day] = FastingLevels.NO_FISH
+        else:
+            fasting_days[curr_day] = FastingLevels.NO_OIL
         curr_day+=TD_ONE_DAY
+    fasting_days[entry_of_the_theotokos] = FastingLevels.NO_DAIRY
     # we're finished
     if not old_style:
         return fasting_days
