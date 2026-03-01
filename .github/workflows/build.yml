@@ -20,7 +20,7 @@ jobs:
       - name: checkout Repository
         uses: actions/checkout@v4
 
-      - name: setup Python 
+      - name: setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -32,9 +32,10 @@ jobs:
 
       - name: generate files
         run: |
-          locale -a
-          python generate.py --old --lang=de_DE --ics=old.de.cal.ics --html=old.de.cal.html
-          python generate.py --new --lang=de_DE --ics=new.de.cal.ics --html=new.de.cal.html
+          python generate.py --old --lang=de --ics=old.de.cal.ics --html=old.de.cal.html
+          python generate.py --new --lang=de --ics=new.de.cal.ics --html=new.de.cal.html
+          python generate.py --old --lang=en --ics=old.en.cal.ics --html=old.en.cal.html
+          python generate.py --new --lang=en --ics=new.en.cal.ics --html=new.en.cal.html
           ln -s old.de.cal.html index.html
 
       - name: upload artifacts

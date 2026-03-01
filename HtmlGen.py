@@ -3,22 +3,16 @@ from FastingCalendar import FastingLevels, TD_ONE_DAY
 from datetime import date, timedelta
 from calendar import monthrange, day_abbr
 
-_FL2HC = {
-        FastingLevels.NO_FASTING: "f0",
-        FastingLevels.NO_MEAT: "f1",
-        FastingLevels.NO_DAIRY: "f2",
-        FastingLevels.NO_FISH: "f3",
-        FastingLevels.NO_OIL: "f4",
-}
+_FL2HC = [ "f0", "f1", "f2", "f3", "f4", ]
 
 
 def get_legend(transl):
     return '<div class="legend">' \
-        + ''.join([f'<div><div class="lc {v}"></div><div>{transl[k]}</div></div>' for k,v in _FL2HC.items()]) \
+        + ''.join([f'<div><div class="lc {v}"></div><div>{transl[k]}</div></div>' for k,v in enumerate(_FL2HC)]) \
         + '</div>'
 
 
-def _write_month(year:int, month:int, fastdays:map, fd):
+def _write_month(year:int, month:int, fastdays:dict, transl, fd):
     first_day_of_month = date(year, month, 1)
     last_day_of_month = date(year, month, monthrange(year, month)[1])
     last_day_in_table = last_day_of_month+timedelta(days=6-((last_day_of_month.weekday()+1)%7))
@@ -26,28 +20,28 @@ def _write_month(year:int, month:int, fastdays:map, fd):
     # move current day to last sunday
     if curr_day.weekday()!=6:
         curr_day = first_day_of_month-timedelta(days=first_day_of_month.weekday()+1)
-    print(f'<table class="month"><tr><th colspan="7">{first_day_of_month.strftime("%B")}</th></tr><tr class="wd">', file=fd)
-    for d in map(lambda x: x[:2].upper(), [day_abbr[6]]+day_abbr[:6]):
-        print(f'<th>{d}</th>', file=fd)
-    print("</tr>", file=fd)
+    fd.write(f'<table class="month"><tr><th colspan="7">{transl["months"][first_day_of_month.month-1]}</th></tr><tr class="wd">')
+    for d in transl["weekdays"]:
+        fd.write(f'<th>{d}</th>')
+    fd.write("</tr>")
     while curr_day <= last_day_in_table:
         if curr_day.weekday()==6: # start new row each sunday
-            print("<tr>", file=fd)
+            fd.write("<tr>")
         if (curr_day < first_day_of_month) or (curr_day > last_day_of_month):
-            print('<td class="empty"></td>', file=fd)
+            fd.write('<td class="empty"></td>')
         else:
-            print(f'<td class="{_FL2HC[fastdays.get(curr_day, FastingLevels.NO_FASTING)]}">{curr_day.day}</td>', file=fd)
+            fd.write(f'<td class="{_FL2HC[fastdays.get(curr_day, FastingLevels.NO_FASTING).value]}">{curr_day.day}</td>')
         if curr_day.weekday()==5: # end row each saturday
-            print('</tr>', file=fd)
+            fd.write('</tr>')
         curr_day += TD_ONE_DAY
-    print('</table>', file=fd)
+    fd.write('</table>')
 
 
 def fastdays2html(year, fastdays, transl, htmlfile, title="", introduction="", footer=""):
     with open(htmlfile, 'w') as fd:
-        print(f'<!DOCTYPE html><html><head><title>{title}</title><link rel="stylesheet" type="text/css" href="style.css"/></head><body>{introduction}<div class="grid">', file=fd)
+        fd.write(f'<!DOCTYPE html><html><head><title>{title}</title><link rel="stylesheet" type="text/css" href="style.css"/></head><body>{introduction}<div class="grid">')
         for m in range(1,13):
-            print("<div>", file=fd)
-            _write_month(year,m,fastdays,fd)
-            print("</div>", file=fd)
-        print(f'</div>{footer}</body></html>', file=fd)
+            fd.write("<div>")
+            _write_month(year, m, fastdays, transl, fd)
+            fd.write("</div>")
+        fd.write(f'</div>{footer}</body></html>')

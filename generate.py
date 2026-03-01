@@ -13,9 +13,10 @@ Options:
     --year=YEAR  set this year instead of current year.
     --ics=FILE   produce a ics file.
     --html=FILE  produce a html file.
-    --lang=LANG  set language, e.g. de_DE
+    --lang=FILE  get translation from file.
 """
 from docopt import docopt
+import yaml
 import logging
 from datetime import date
 import vobject
@@ -23,6 +24,7 @@ from FastingCalendar import FastingLevels, getFastingCalendar
 from IcsGen import fastdays2ics
 from HtmlGen import fastdays2html, get_legend
 from locale import setlocale, LC_ALL
+from os.path import dirname,isfile
 
 ARGV = docopt(__doc__)
 current_year = date.today().year
@@ -32,23 +34,23 @@ if ARGV["--year"]:
     except ValueError:
         logging.warning(f"value '{i}' for year not recognized")
 
+tf = dirname(__file__)+"/translations/en.yml"
+
 if ARGV["--lang"]:
-    try:
-        setlocale(LC_ALL, ARGV["--lang"]+".UTF-8")
-    except Exception as e:
-        logging.warning(str(e))
+    ltf = dirname(__file__)+"/translations/"+ARGV["--lang"]+".yml"
+    if isfile(ARGV["--lang"]):
+        tf = ARGV["--lang"]
+    elif isfile(ltf):
+        tf = ltf
+
+transl = {}
+with open(tf, 'r') as fd:
+    transl = yaml.safe_load(fd)
+
+
 
 fasting_days = getFastingCalendar(current_year, ARGV["--old"])
 
-# german texts:
-fl2txtde={
-    FastingLevels.NO_FASTING: "kein Fasten",
-    FastingLevels.NO_MEAT: "kein Fleisch",
-    FastingLevels.NO_DAIRY: "keine Milchprodukte, Eier",
-    FastingLevels.NO_FISH: "kein Fisch",
-    FastingLevels.NO_OIL: "kein Öl"
-}
-
-fastdays2ics(fasting_days, fl2txtde, ARGV["--ics"])
+fastdays2ics(fasting_days, transl["levels"], ARGV["--ics"])
 title = f"Fasting calendar {current_year}"
-fastdays2html(current_year, fasting_days, fl2txtde, ARGV["--html"], title, f'<h1 class="noprint">{title}</h1>', get_legend(fl2txtde))
+fastdays2html(current_year, fasting_days, transl, ARGV["--html"], title, f'<h1 class="noprint">{title}</h1>', get_legend(transl["levels"]))

@@ -8,7 +8,7 @@ def fastdays2ics(fastdays, transl, icsfile):
         if v == FastingLevels.NO_FASTING:
             continue
         e = cal.add('vevent')
-        e.add('summary').value = transl[v]
+        e.add('summary').value = transl[v.value]
         e.add('dtstart').value = k
     with open(icsfile, 'w') as f:
         f.write(cal.serialize())
