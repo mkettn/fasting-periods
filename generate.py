@@ -55,5 +55,5 @@ if ARGV["--old"]:
 fasting_days = getFastingCalendar(current_year, ARGV["--old"])
 
 fastdays2ics(fasting_days, transl["levels"], ARGV["--ics"])
-title = f"{transl["title"]} {current_year} {cal_style}"
+title = transl["title"] + f" {current_year} {cal_style}"
 fastdays2html(current_year, fasting_days, transl, ARGV["--html"], title, f'<h1 class="noprint">{title}</h1>', get_legend(transl["levels"]))
