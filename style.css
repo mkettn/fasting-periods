@@ -40,9 +40,11 @@ h1 {
 .empty {
     background-color: lightgray;
 }
+/*
 .f0 {
     background-color: yellow;
 }
+    */
 
 .f1 {
     background-color: orange;
@@ -62,7 +64,7 @@ h1 {
 
 .legend {
     display: grid;
-    grid-template-columns: auto auto auto auto auto;
+    grid-template-columns: auto auto auto auto;
 }
 .legend div {
     margin: 1ex;

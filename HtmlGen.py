@@ -8,7 +8,7 @@ _FL2HC = [ "f0", "f1", "f2", "f3", "f4", ]
 
 def get_legend(transl):
     return '<div class="legend">' \
-        + ''.join([f'<div><div class="lc {v}"></div><div>{transl[k]}</div></div>' for k,v in enumerate(_FL2HC)]) \
+        + ''.join([f'<div><div class="lc {v}"></div><div>{transl[k]}</div></div>' for k,v in enumerate(_FL2HC[1:])]) \
         + '</div>'
 
 
