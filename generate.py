@@ -22,7 +22,7 @@ from datetime import date
 import vobject
 from FastingCalendar import FastingLevels, getFastingCalendar
 from IcsGen import fastdays2ics
-from HtmlGen import fastdays2html, get_legend
+from HtmlGen import fastdays2html
 from locale import setlocale, LC_ALL
 from os.path import dirname,isfile
 
@@ -56,4 +56,4 @@ fasting_days = getFastingCalendar(current_year, ARGV["--old"])
 
 fastdays2ics(fasting_days, transl["levels"], ARGV["--ics"])
 title = transl["title"] + f" {current_year} {cal_style}"
-fastdays2html(current_year, fasting_days, transl, ARGV["--html"], title, f'<h1 class="noprint">{title}</h1>', get_legend(transl["levels"]))
+fastdays2html(current_year, fasting_days, transl, ARGV["--html"], title)

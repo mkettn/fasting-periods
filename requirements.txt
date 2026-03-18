@@ -1,3 +1,5 @@
 docopt
 vobject
 pyyaml
+jinja2
+minify-html

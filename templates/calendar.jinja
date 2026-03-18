@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+<h1 class="noprint">{{ title }}</h1>
+    {{ introduction }}
+    <div class="grid">
+{% for m in months %}
+    <div class="month"> 
+    <table>
+<tr><th colspan="7">{{ m.name }}</th></tr>
+<tr class="wd">
+{% for dname in transl.weekdays %}
+    <th>{{ dname }}</th>
+{% endfor %}
+</tr>
+<tr>
+{% for curr_day in m.days %}
+{% if (loop.index-1) is divisibleby 7 %}
+</tr><tr>
+{% endif %}
+<td class="{{ curr_day }}">
+{% if curr_day != "empty" %}
+{{ (loop.index-m.begin) }}
+{% endif %}
+</td>
+{% endfor %}
+</tr>
+</table>
+    </div>
+     {% endfor %}
+    </div>
+    <div class="legend">
+{% for l in transl.levels[1:] %}
+<div><div class="lc f{{ loop.index }}"></div><div>{{l}}</div></div>
+{% endfor %}
+    </div>
+    {{ footer }}
+</body>
+</html>
