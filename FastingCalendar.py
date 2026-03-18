@@ -103,7 +103,7 @@ def getFastingCalendar(year, old_style):
         fasting_days[curr_day]=FastingLevels.NO_FISH
         if curr_day.weekday() in [0, 2, 4]:
             fasting_days[curr_day]=FastingLevels.NO_OIL
-        elif curr_day.weekday in [5, 6]:
+        elif curr_day.weekday() in [5, 6]:
             fasting_days[curr_day]=FastingLevels.NO_DAIRY
         curr_day+=TD_ONE_DAY
     if fasting_days[nativity_of_john_baptist]:
@@ -135,6 +135,8 @@ def getFastingCalendar(year, old_style):
     fasting_days[entry_of_the_theotokos] = FastingLevels.NO_DAIRY
     # we're finished
     if not old_style:
+        # no fasting on christmas:
+        fasting_days[christmas] = FastingLevels.NO_FASTING
         return fasting_days
     # if we're on old calender, we're not finished yet
     curr_day = first_day_of_year
