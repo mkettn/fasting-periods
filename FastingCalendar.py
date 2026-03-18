@@ -46,8 +46,8 @@ def getFastingCalendar(year, old_style):
     # moving feast days:
     easter_sunday = easter(year, EASTER_ORTHODOX)
     palm_sunday = easter_sunday-timedelta(weeks=1)
-    ascension_of_christ = easter_sunday+timedelta(days=40)
-    pentecost = easter_sunday+timedelta(days=50)
+    ascension_of_christ = easter_sunday+timedelta(days=39)
+    pentecost = easter_sunday+timedelta(days=49)
     # map for all days of current year -> FastingLevels:
     fasting_days = {}
     curr_day = theophany
